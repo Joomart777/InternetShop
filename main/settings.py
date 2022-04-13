@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = 'django-insecure-j^w(gdn&=$h7+914-xlo!8y1%dkk_&3-2==r=jni2*$9yh+i8_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
@@ -80,28 +80,28 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'main.wsgi.application'
+WSGI_APPLICATION = 'shop.wsgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'shop_db',
-#         'USER': 'joomart',
-#         'PASSWORD' : '1',
-#         'HOST' : 'localhost',
-#         'PORT' : 5432
-#     }
-# }
-
 DATABASES = {
-'default': dj_database_url.config(
-    default=config('DATABASE_URL')
-)
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'intershop_db',
+        'USER': 'joomart',
+        'PASSWORD' : '1',
+        'HOST' : 'localhost',
+        'PORT' : 5432
+    }
 }
+
+# DATABASES = {
+# 'default': dj_database_url.config(
+#     default=config('DATABASE_URL')
+# )
+# }
 
 
 # Password validation

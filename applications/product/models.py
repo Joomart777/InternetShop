@@ -39,5 +39,6 @@ class Rating(models.Model):
             MaxValueValidator(5)
         ])
 
-class
+class Like:
+    pass
 ###>>> Проводим Миграцию, если добавляли и изменяли Моделс
