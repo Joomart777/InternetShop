@@ -23,6 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+
 SECRET_KEY = 'django-insecure-j^w(gdn&=$h7+914-xlo!8y1%dkk_&3-2==r=jni2*$9yh+i8_'
 
 # SECRET_KEY = config('SECRET_KEY')
@@ -45,7 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #Apps
     'applications.product',
-    # 'applications.account',
+    'applications.account',
 
     #modules
     'rest_framework',
@@ -93,7 +94,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'intershop_db',
-        'USER': 'joomart',
+        'USER': 'umutai',
         'PASSWORD' : '1',
         'HOST' : 'localhost',
         'PORT' : 5432
@@ -176,4 +177,4 @@ EMAIL_HOST = config('EMAIL_HOST')
 EMAIL_PORT = config('EMAIL_PORT')
 EMAIL_USE_TLS = config('EMAIL_USE_TLS')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
-EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_eHOST_USER = config('EMAIL_HOST_USER')
