@@ -21,7 +21,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         email = validated_data.get('email')
         password = validated_data.get('password')
         user = User.objects.create_user(email, password)
-        send_confirmation_email(user.email, user.activation_code)
+        send_confirmation_email(user.activation_code, user.email)
         # validated_data.pop('confirm_password', None)
         # return super(RegisterSerializer, self).create(validated_data)
         return user

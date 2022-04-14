@@ -8,6 +8,6 @@ def send_confirmation_email(code,email):
     send_mail(
         'Привет', #title
         full_link, #body
-        'umutai.orozbekova@gmail.com', #for email
+        'umutai.orozbekova.ch@gmail.com', #for email
         [email] #to email
     )
