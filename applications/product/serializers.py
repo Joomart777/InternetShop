@@ -59,7 +59,7 @@ class CategorySerializers(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class CommentSerializers(serializers.ModelSerializer):
+class ReviewSerializers(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = ("review",)

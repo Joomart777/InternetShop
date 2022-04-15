@@ -13,8 +13,7 @@ from rest_framework.viewsets import ModelViewSet, GenericViewSet, ViewSet
 
 from applications.product.filters import ProductFilter
 from applications.product.models import *
-from applications.product.serializers import ProductSerializer, RatingSerializers, CategorySerializers, \
-    CommentSerializers
+from applications.product.serializers import ProductSerializer, RatingSerializers, CategorySerializers, ReviewSerializers
 
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -84,13 +83,13 @@ class ProductViewSet(ModelViewSet):
 
     @action(methods=['POST'], detail=True)
     def review(self, request, pk):
-        serializer = CommentSerializers(data=request.data)
+        serializer = ReviewSerializers(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         try:
             obj = Review.objects.get(product=self.get_object(),
                                       owner=request.user)
-            obj.review = request.data['comment']
+            obj.review = request.data['review']
         except Review.DoesNotExist:
             obj = Review(owner=request.user,
                           product=self.get_object(),
