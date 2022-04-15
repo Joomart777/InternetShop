@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
+from applications.account.models import CustomUser
 
 User = get_user_model()
 
@@ -25,7 +26,7 @@ class Product(models.Model):
         return self.name
 
 
-class Image(models.Model):              # Создадим Класс для отображения нескольких картинок для 1го элемента продукта
+class Image(models.Model):
     image = models.ImageField(upload_to='images', null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
 
@@ -37,6 +38,16 @@ class Rating(models.Model):
             MinValueValidator(1),
             MaxValueValidator(5)
         ])
+
+class Comment(models.Model):
+    owner = models.ForeignKey(CustomUser, related_name='comments', on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, related_name='comments', on_delete=models.CASCADE)
+    comment = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.owner} --> {self.product}'
+
 
 class Like:
     pass

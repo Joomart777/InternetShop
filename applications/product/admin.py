@@ -9,6 +9,7 @@ admin.site.register(Category)
 # admin.site.register(Product)
 admin.site.register(Image)
 admin.site.register(Rating)
+admin.site.register(Comment)
 
 
 class ImageInAdmin(admin.TabularInline):
