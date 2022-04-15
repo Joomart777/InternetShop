@@ -5,7 +5,7 @@ from django.db import models
 
 from applications.likes.models import Like
 
-User = get_user_model() # работтает с нашим юзером в переменную, встроенн метод
+User = get_user_model()
 
 # Create your models here.
 class Category(models.Model):
@@ -44,7 +44,6 @@ class Image(models.Model):              # Создадим Класс для о�
     image = models.ImageField(upload_to='images', null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
 
-    # *** >>> Создадим Рейтинг товаров:
 
 class Rating(models.Model):
         product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='rating')

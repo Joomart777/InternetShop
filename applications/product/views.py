@@ -95,10 +95,10 @@ class CategoryRetriveDeleteUpdateView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
 
 
-# class DeleteUpdateRetriveView(RetrieveUpdateDestroyAPIView):
-#     queryset = Product.objects.all()
-#     serializer_class = ProductSerializer
-#     permission_classes = [IsAuthor] # [IsAdmin]
+class DeleteUpdateRetriveView(RetrieveUpdateDestroyAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    permission_classes = [IsAuthenticated] # [IsAdmin]
 
 
 # class ProductViewSet(ListModelMixin, CreateModelMixin,RetrieveModelMixin,UpdateModelMixin, GenericViewSet):
