@@ -13,6 +13,7 @@ urlpatterns = [
     # path('', ProductViewSet.as_view({'get':'list'})),   ## -- ViewSet, as_view. если будет запрос Get --> выведи list. В отличии от ApiView (где отдельно для каждого метод)
     path('category/', CategoryListCreateView.as_view()),    # для Category
     path('category/<str:slug>/', CategoryRetrieveDeleteUpdateView.as_view()),
+
     path('', include(router.urls)),  # регистрир Маршрутизатор. Router регистр желательно Вконце, иначе верхние не увидет
 
 ]

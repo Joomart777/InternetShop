@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.utils import representation
 
-from applications.product.models import Product, Image, Rating, Category
+from applications.product.models import Product, Image, Rating, Category, Likes
 
 
 class ProductImageSerializers(serializers.ModelSerializer):    # сериализатор для обработки картинок
@@ -16,7 +16,7 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         # fields = '__all__'
-        fields = ('id', 'owner','name','description','category','price','images','rating')      # Отображение полей в JSON формате на вывод всех продуктов, указываем какие поля
+        fields = ('id', 'owner','name','description','category','price','images','rating','like')      # Отображение полей в JSON формате на вывод всех продуктов, указываем какие поля
 
     def create(self, validated_data):       # переопределили, сохраняет вконце все что мы сделали
         request = self.context.get('request')       # context - сохран данные что передавали, вытаскиваем request
@@ -44,12 +44,16 @@ class ProductSerializer(serializers.ModelSerializer):
         else:
            representation['rating'] = rating_result/instance.rating.all().count()     # Вывод Средн Арифмет Рейтинг, присвоить в рейтинг
 
+
+
+
+
+
         return representation
 
 
 class RatingSerializers(serializers.ModelSerializer):
     # owner = serializers.EmailField(required=False)
-
     class Meta:
         model = Rating
         # fields = '__all__'
@@ -59,3 +63,12 @@ class CategorySerializers(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = "__all__"
+
+class LikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Likes
+        fields = (
+            'id',
+            'body',
+            'total_likes'
+        )

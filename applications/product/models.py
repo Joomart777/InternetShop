@@ -1,7 +1,9 @@
 from django.contrib.auth import get_user_model
+from django.contrib.contenttypes.fields import GenericRelation
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
+from applications.likes.models import Like
 
 User = get_user_model() # работтает с нашим юзером в переменную, встроенн метод
 
@@ -20,9 +22,22 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.ForeignKey(Category, related_name='product', on_delete=models.CASCADE)
     # image = models.ImageField(upload_to='images', null=True, blank=True)
-
     def __str__(self):
         return self.name
+
+
+
+class Likes(models.Model):
+    # body = models.CharField(max_length=140)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='like')
+    likes = GenericRelation(Like)
+    def __str__(self):
+        return self.body
+    @property
+    def total_likes(self):
+        return self.likes.count()
+
+
 
 
 class Image(models.Model):              # Создадим Класс для отображения нескольких картинок для 1го элемента продукта
@@ -39,6 +54,15 @@ class Rating(models.Model):
             MaxValueValidator(5)
         ])
 
-class Like:
-    pass
+# class Like:
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='like')
+#     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='like')
+#     rating = models.SmallIntegerField(validators=[
+#         MinValueValidator(1),
+#         MaxValueValidator(1)
+#     ])
+
+
+
+
 ###>>> Проводим Миграцию, если добавляли и изменяли Моделс

@@ -12,11 +12,12 @@ admin.site.register(Rating)       # Чтобы видеть в Админке, �
 
 admin.site.unregister(Group)        # Дерегистрируем Группы - автоматом появляется при создании Аккаунтов
 
+# admin.site.register(Like)
 
 class ImageInAdmin(admin.TabularInline):
     model = Image
     fields = ('image',)
-    max_num = 5
+    max_num = 3
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):

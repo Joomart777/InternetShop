@@ -5,7 +5,7 @@ from django.shortcuts import render
 # Create your views here.
 # Напишем CRUD для отображения
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import status
+from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.generics import *
@@ -19,7 +19,7 @@ from rest_framework.viewsets import ModelViewSet, GenericViewSet, ViewSet
 from applications.product.filters import ProductFilter
 from applications.product.models import *
 from applications.product.permissions import IsAdmin, IsAuthor
-from applications.product.serializers import ProductSerializer, RatingSerializers, CategorySerializers
+from applications.product.serializers import ProductSerializer, RatingSerializers, CategorySerializers, LikeSerializer
 
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -122,10 +122,10 @@ class ProductViewSet(ModelViewSet):
 
         if self.action in ['list','retrieve']:   # в ViewSet
             permissions = []        # разрешение - Всем доступно, если безопасный запрос
-        elif self.action == 'rating':           # Если запрос направлен на рейтинг, тоже аутентиф нужен. (как бы ниже указан, но здесь вариант написания)
-            permissions = [IsAuthenticated]
-        else:
-            permissions = [IsAuthenticated]
+        # elif self.action == 'rating':           # Если запрос направлен на рейтинг, тоже аутентиф нужен. (как бы ниже указан, но здесь вариант написания)
+        #     permissions = [IsAuthenticated]
+        # else:
+        #     permissions = [IsAuthenticated]
         return  [permission() for permission in permissions]       # вывод для отображения по всем permissions
 
 
@@ -135,6 +135,7 @@ class ProductViewSet(ModelViewSet):
 
     @action(methods=['POST'], detail=True)
     # Когда в вьюжке новый метод, надо добавить в сериализатор тоже
+
     def rating(self, request, pk):          #...../id_prod/rating/
         serializer = RatingSerializers(data=request.data)
         serializer.is_valid(raise_exception=True)   # проверка
@@ -149,11 +150,17 @@ class ProductViewSet(ModelViewSet):
         return Response(request.data, status=status.HTTP_201_CREATED)
 
 
+    @action(methods=['POST'], detail=True)
+    def like(self, request, pk):
+        serializer = LikeSerializers(data=request.data)
+#TODO:Like
+
+
 ## Добавим CRUD на Категории   - с помощью Generics (из фреймфорк)
 class CategoryListCreateView(ListCreateAPIView):   # от generics наследуется, Листинг
     queryset = Category.objects.all()
     serializer_class = CategorySerializers
-    permission_classes = [IsAuthenticated]    # Можно так указать для прав просмотра для Аутентиф входа
+    # permission_classes = [IsAuthenticated]    # Можно так указать для прав просмотра для Аутентиф входа
 
 
 
@@ -162,4 +169,11 @@ class CategoryRetrieveDeleteUpdateView(RetrieveUpdateDestroyAPIView):   # RUD
     lookup_field = 'slug'       # Нужно зарегить это поле, если в адрес строке запрос отличается от id -- названия категории, строка
     queryset = Category.objects.all()
     serializer_class = CategorySerializers
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
+
+
+
+class LikeViewSet(viewsets.ModelViewSet):
+    queryset = Likes.objects.all()
+    serializer_class = LikeSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly, )
