@@ -46,19 +46,9 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.email
 
-    # def create_activation_code(self):
-    #     import uuid
-    #     code = str(uuid.uuid4())
-    #     self.activation_code = code
-
 
     def create_activation_code(self):
-        """шифрование
-        1. hashlib.md5(self.email + str(self.id).encode()) -> hexdigest()
-        2. get_random_string(50, allowed_char=['which symbols are allowed in this string'])
-        3. UUID
-        4. datetime.datetime.now().timestamp() or time.time() -> 01.01.1970 in seconds
-        """
+        """шифрование"""
         import hashlib
         string = self.email + str(self.id)
         encode_string = string.encode()

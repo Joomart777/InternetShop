@@ -12,18 +12,11 @@ class RegisterSerializer(serializers.ModelSerializer):
         model = User
         fields = ('email','password','confirm_password')
 
-    # def create(self, validated_data):
-    #     user = User.objects.create_user(**validated_data)
-    #     code = user.activation_code
-    #     send_confirmation_email(code,user)
-    #     return user
     def create(self, validated_data):
         email = validated_data.get('email')
         password = validated_data.get('password')
         user = User.objects.create_user(email, password)
         send_confirmation_email(user.activation_code, user.email)
-        # validated_data.pop('confirm_password', None)
-        # return super(RegisterSerializer, self).create(validated_data)
         return user
 
 
@@ -71,7 +64,7 @@ class ChangePasswordSerializer(serializers.Serializer):
 
     def validate(self,attrs):
         pass1 = attrs.get('password')
-        pass2 =  attrs.get('password_confirm')
+        pass2 = attrs.get('password_confirm')
 
 
         if pass1 != pass2:
