@@ -12,7 +12,7 @@ from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnl
 from rest_framework.viewsets import ModelViewSet, GenericViewSet, ViewSet
 
 from applications.product.filters import ProductFilter
-from applications.product.models import Product, Rating, Category, Comment
+from applications.product.models import *
 from applications.product.serializers import ProductSerializer, RatingSerializers, CategorySerializers, \
     CommentSerializers
 
@@ -83,16 +83,16 @@ class ProductViewSet(ModelViewSet):
         return Response(request.data,status=status.HTTP_201_CREATED)
 
     @action(methods=['POST'], detail=True)
-    def comment(self, request, pk):
+    def review(self, request, pk):
         serializer = CommentSerializers(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         try:
-            obj = Comment.objects.get(product=self.get_object(),
+            obj = Review.objects.get(product=self.get_object(),
                                       owner=request.user)
-            obj.comment = request.data['comment']
-        except Comment.DoesNotExist:
-            obj = Comment(owner=request.user,
+            obj.review = request.data['comment']
+        except Review.DoesNotExist:
+            obj = Review(owner=request.user,
                           product=self.get_object(),
                           )
         obj.save()

@@ -39,10 +39,10 @@ class Rating(models.Model):
             MaxValueValidator(5)
         ])
 
-class Comment(models.Model):
+class Review(models.Model):
     owner = models.ForeignKey(CustomUser, related_name='comments', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, related_name='comments', on_delete=models.CASCADE)
-    comment = models.TextField()
+    review = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
