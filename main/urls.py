@@ -26,20 +26,19 @@ from drf_yasg import openapi
 
 
 schema_view = get_schema_view(
-   openapi.Info(
-      title="Snippets API",
-      default_version='v1',
-      description="Test description",
-   ),
-   public=True,
+    openapi.Info(
+        title='InternetShop project',
+        description='Интернет магазин',
+        default_version='v1',
+    ),
+    public=True
 )
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('product/', include('applications.product.urls')),
-    # path('account/', include('applications.account.urls')),
     path('swagger/', schema_view.with_ui('swagger')),
-    path('api/v1/product', include('applications.account.urls')),       #version 1 после категорий
-    path('api/v1/account/', include('applications.account.urls')),
+    path('api/v1/product/', include('applications.product.urls')),
+    path('api/v1/account/', include('applications.account.urls'))
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-              ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
