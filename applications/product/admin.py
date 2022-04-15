@@ -8,9 +8,7 @@ from applications.product.models import *
 admin.site.register(Category)
 # admin.site.register(Product)
 admin.site.register(Image)
-admin.site.register(Rating)       # Чтобы видеть в Админке, зарегили эту модельку - рейтинг
-
-admin.site.unregister(Group)        # Дерегистрируем Группы - автоматом появляется при создании Аккаунтов
+admin.site.register(Rating)
 
 # admin.site.register(Like)
 
