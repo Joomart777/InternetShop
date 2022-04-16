@@ -11,9 +11,11 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ModelViewSet, GenericViewSet, ViewSet
 
+from applications import product
 from applications.product.filters import ProductFilter
 from applications.product.models import *
-from applications.product.serializers import ProductSerializer, RatingSerializers, CategorySerializers, ReviewSerializers
+from applications.product.serializers import ProductSerializer, RatingSerializers, CategorySerializers, \
+    ReviewSerializers, FavoriteSerializers
 
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -70,33 +72,39 @@ class ProductViewSet(ModelViewSet):
     def rating(self,request,pk):
         serializer = RatingSerializers(data=request.data)
         serializer.is_valid(raise_exception=True)
-
         try:
             obj = Rating.objects.get(product=self.get_object(), owner=request.user)
             obj.rating = request.data['rating']
-
         except Rating.DoesNotExist:
             obj = Rating(owner=request.user,product=self.get_object(),rating=request.data['rating'])
-
         obj.save()
         return Response(request.data,status=status.HTTP_201_CREATED)
+
 
     @action(methods=['POST'], detail=True)
     def review(self, request, pk):
         serializer = ReviewSerializers(data=request.data)
         serializer.is_valid(raise_exception=True)
-
         try:
-            obj = Review.objects.get(product=self.get_object(),
-                                      owner=request.user)
+            obj = Review.objects.get(product=self.get_object(),owner=request.user)
             obj.review = request.data['review']
         except Review.DoesNotExist:
-            obj = Review(owner=request.user,
-                          product=self.get_object(),
-                          )
+            obj = Review(owner=request.user,product=self.get_object(),)
         obj.save()
-        return Response(request.data,
-                        status=status.HTTP_201_CREATED)
+        return Response(request.data,status=status.HTTP_201_CREATED)
+
+
+    @action(methods=['POST'], detail=True)
+    def favorite(self, request, pk):
+        serializer = FavoriteSerializers(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:
+            object = Favorite.objects.get(product=self.get_object(),owner=request.user)
+        except Favorite.DoesNotExist:
+            object = Favorite(owner=request.user,product=self.get_object(),)
+        object.save()
+        return Response(request.data, status=status.HTTP_200_OK)
+
 
 
 class CategoryListCreateView(ListCreateAPIView):

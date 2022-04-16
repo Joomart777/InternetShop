@@ -3,6 +3,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
 from applications.account.models import CustomUser
+from main import settings
 
 User = get_user_model()
 
@@ -47,6 +48,17 @@ class Review(models.Model):
 
     def __str__(self):
         return f'{self.owner} --> {self.product}'
+
+
+class Favorite(models.Model):
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL,null=True,blank=True, on_delete=models.CASCADE,related_name='favorites')
+    product = models.ForeignKey(Product,null=True,blank=True, on_delete=models.CASCADE, related_name='favorites')
+    favorite = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f'{self.owner} --> {self.product}'
+
+
 
 
 class Like:

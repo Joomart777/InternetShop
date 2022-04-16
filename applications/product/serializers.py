@@ -63,3 +63,9 @@ class ReviewSerializers(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = ("review",)
+
+
+class FavoriteSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Favorite
+        fields = '__all__'

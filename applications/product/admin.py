@@ -10,6 +10,7 @@ admin.site.register(Category)
 admin.site.register(Image)
 admin.site.register(Rating)
 admin.site.register(Review)
+admin.site.register(Favorite)
 
 
 class ImageInAdmin(admin.TabularInline):
