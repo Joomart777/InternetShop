@@ -101,19 +101,6 @@ class DeleteUpdateRetriveView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated] # [IsAdmin]
 
 
-# class ProductViewSet(ListModelMixin, CreateModelMixin,RetrieveModelMixin,UpdateModelMixin, GenericViewSet):
-#     queryset = Product.objects.all()
-#     serializer_class = ProductSerializer
 
+###Likes
 
-# class ProductViewSet(ViewSet):
-#     def list(self,request):
-#         pass
-#     def create(self):
-#         pass
-#     def retrieve(self):
-#         pass
-#     def update(self):
-#         pass
-#     def destroy(self):
-#         pass

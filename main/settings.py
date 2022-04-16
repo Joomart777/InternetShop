@@ -152,7 +152,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = 'media/'        # Все файлы медиа = хранятся в этой папке
 MEDIA_ROOT = BASE_DIR/'media/'
 
-# AUTH_USER_MODEL = 'account.CustomUser'          # Встроенного юзера переопределилил - использовать нашего юзера
+AUTH_USER_MODEL = 'account.CustomUser'          # Встроенного юзера переопределилил - использовать нашего юзера
  #Указали, что будем работать с Кастомным юзером
 
 

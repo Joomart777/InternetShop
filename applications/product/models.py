@@ -3,7 +3,7 @@ from django.contrib.contenttypes.fields import GenericRelation
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
-from applications.likes.models import Like
+
 
 User = get_user_model()
 
@@ -26,20 +26,6 @@ class Product(models.Model):
         return self.name
 
 
-
-class Likes(models.Model):
-    # body = models.CharField(max_length=140)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='like')
-    likes = GenericRelation(Like)
-    def __str__(self):
-        return self.body
-    @property
-    def total_likes(self):
-        return self.likes.count()
-
-
-
-
 class Image(models.Model):              # Создадим Класс для отображения нескольких картинок для 1го элемента продукта
     image = models.ImageField(upload_to='images', null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
@@ -53,15 +39,22 @@ class Rating(models.Model):
             MaxValueValidator(5)
         ])
 
-# class Like:
+
+###Likes
+
+# class Likes(models.Model):
+#     # body = models.CharField(max_length=140)
 #     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='like')
-#     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='like')
-#     rating = models.SmallIntegerField(validators=[
-#         MinValueValidator(1),
-#         MaxValueValidator(1)
-#     ])
+#     likes = GenericRelation(Like)
+#     def __str__(self):
+#         return self.body
+#     @property
+#     def total_likes(self):
+#         return self.likes.count()
 
 
+class LikeProd(models.Model):
+    likes = models.ManyToManyField(User, blank=True, related_name='likes')
+    dislikes = models.ManyToManyField(User, blank=True, related_name='dislikes')
 
 
-###>>> Проводим Миграцию, если добавляли и изменяли Моделс
