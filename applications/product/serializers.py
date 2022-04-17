@@ -13,10 +13,14 @@ class ProductImageSerializers(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.email')
     images = ProductImageSerializers(many=True, read_only=True)
+    reviews = serializers.StringRelatedField(many=True)
+    favorites = serializers.StringRelatedField(many=True)
+
     class Meta:
         model = Product
         # fields = '__all__'
-        fields = ('id', 'owner','name','description','category','price','images','rating')
+        fields = ('id', 'owner','name','description','category','price','images','rating','reviews','favorites')
+
     def create(self, validated_data):
         request = self.context.get('request')
         images_data = request.FILES
@@ -27,17 +31,10 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-
-        # print(representation)
-        # representation['owner'] = 'ff'
-        # print(instance)
-
         rating_result = 0
         for i in instance.rating.all():
             print(i)
             rating_result += int(i.rating)
-        # print(rating_result)
-
         if instance.rating.all().count()  == 0:
            representation['rating'] = rating_result
         else:
@@ -47,7 +44,6 @@ class ProductSerializer(serializers.ModelSerializer):
 
 class RatingSerializers(serializers.ModelSerializer):
     # owner = serializers.EmailField(required=False)
-
     class Meta:
         model = Rating
         # fields = '__all__'
