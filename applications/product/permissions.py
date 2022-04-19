@@ -1,6 +1,5 @@
 from rest_framework.permissions import BasePermission, SAFE_METHODS
 
-#### >>> Создадим Свои классы Permissions
 
 class IsAdmin(BasePermission):
     #Create, List

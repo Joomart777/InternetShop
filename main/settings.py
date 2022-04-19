@@ -24,9 +24,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-SECRET_KEY = 'django-insecure-j^w(gdn&=$h7+914-xlo!8y1%dkk_&3-2==r=jni2*$9yh+i8_'
 
-# SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
@@ -90,16 +89,6 @@ WSGI_APPLICATION = 'main.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'intershop_db',
-#         'USER': 'umutai',
-#         'PASSWORD' : '1',
-#         'HOST' : 'localhost',
-#         'PORT' : 5432
-#     }
-# }
 
 DATABASES = {
     'default': dj_database_url.config(
@@ -152,8 +141,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = 'media/'        # Все файлы медиа = хранятся в этой папке
 MEDIA_ROOT = BASE_DIR/'media/'
 
-AUTH_USER_MODEL = 'account.CustomUser'          # Встроенного юзера переопределилил - использовать нашего юзера
- #Указали, что будем работать с Кастомным юзером
+AUTH_USER_MODEL = 'account.CustomUser'
 
 
 REST_FRAMEWORK = {

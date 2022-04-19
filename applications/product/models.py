@@ -29,15 +29,6 @@ class Product(models.Model):
     def __str__(self):
         return f'{self.name}'
 
-    # @property
-    # def like(self):
-    #     from .models import Likes
-    #     return Likes.objects.filter(product=self).values() or []
-        # pass
-        # return self.like.values() or []
-
-
-
 
 
 class Image(models.Model):
@@ -72,10 +63,15 @@ class Likes(models.Model):
     # owner = models.OneToOneField(User, on_delete=models.CASCADE)
     owner = models.ForeignKey(User, blank=True, on_delete=models.CASCADE, related_name='like')
 
+    def __str__(self):
+        return f'{self.owner}--likes-> {self.product}'
+
+
+class Order(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='order')
+    customer = models.CharField(verbose_name='Your name', max_length=30)
+    tel = models.CharField(verbose_name='Your tel',max_length=30, blank=False)
+    quantity = models.PositiveIntegerField(verbose_name='Quantity', blank=False)
 
     def __str__(self):
-        return f'{self.owner}-- {self.product}'
-
-
-
-
+        return f'{self.customer}--ordered-> {self.product}'

@@ -11,7 +11,7 @@ admin.site.register(Image)
 admin.site.register(Rating)
 admin.site.register(Review)
 admin.site.register(Likes)
-# admin.site.register(Like)
+admin.site.register(Order)
 
 class ImageInAdmin(admin.TabularInline):
     model = Image

@@ -68,8 +68,11 @@ class ReviewSerializers(serializers.ModelSerializer):
         fields = ("review",)
 
 class LikeSerializers(serializers.ModelSerializer):
-    # like = LikeTagSerializer(read_only=True, many=True).data
     class Meta:
         model = Likes
         fields = "__all__"
 
+class OrderSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = "__all__"

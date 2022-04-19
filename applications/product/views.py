@@ -20,7 +20,7 @@ from applications.product.models import *
 from applications.product.permissions import IsAdmin, IsAuthor
 
 from applications.product.serializers import ProductSerializer, RatingSerializers, CategorySerializers, \
-    ReviewSerializers, LikeSerializers
+    ReviewSerializers, LikeSerializers, OrderSerializers
 
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -121,6 +121,24 @@ class ProductViewSet(ModelViewSet):
         return Response('liked')
 
 
+##Order
+    @action(methods=['POST'], detail=True)
+    def order(self, request, pk):
+        serializer = OrderSerializers(data=request.data)
+        obj = Order.objects.create(product=self.get_object(), customer=request.data['customer'],
+                                tel = request.data['tel'], quantity = request.data['quantity'])
+        obj.save()
+        vl = obj.product_id
+        # print(vl)
+        objquery = request.data.copy()
+        objquery.__setitem__("product_id", vl)
+
+        return Response(objquery,
+                        status=status.HTTP_201_CREATED)
+
+
+
+
 class CategoryListCreateView(ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializers
@@ -130,9 +148,7 @@ class CategoryRetriveDeleteUpdateView(RetrieveUpdateDestroyAPIView):
     lookup_field = 'slug'
     queryset = Category.objects.all()
     serializer_class = CategorySerializers
-
     # permission_classes = [IsAuthenticated]
-
 
 
 class DeleteUpdateRetriveView(RetrieveUpdateDestroyAPIView):
