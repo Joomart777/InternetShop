@@ -107,6 +107,19 @@ class ProductViewSet(ModelViewSet):
 
 
 
+    @action(methods=['POST'], detail=True)
+    def like(self, request, pk):
+        user = request.user
+        obj = Like.objects.filter(product=self.get_object(), owner=request.user)
+        if obj:
+           obj.delete()
+           return Response('unliked', status=status.HTTP_200_OK)
+        else:
+            Like.objects.create(product=self.get_object(), owner=request.user)
+            return Response('liked', status=status.HTTP_200_OK)
+
+
+
 class CategoryListCreateView(ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializers

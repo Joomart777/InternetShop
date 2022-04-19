@@ -19,7 +19,7 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         # fields = '__all__'
-        fields = ('id', 'owner','name','description','category','price','images','rating','reviews','favorites')
+        fields = ('id', 'owner','name','description','category','price','images','rating','reviews','favorites','like')
 
     def create(self, validated_data):
         request = self.context.get('request')

@@ -61,6 +61,12 @@ class Favorite(models.Model):
 
 
 
-class Like:
-    pass
-###>>> Проводим Миграцию, если добавляли и изменяли Моделс
+class Like(models.Model):
+    owner = models.ForeignKey(CustomUser,blank=True,on_delete=models.CASCADE, related_name='like')
+    product = models.ForeignKey(Product,blank=True, on_delete=models.CASCADE, related_name='like')
+
+    class Meta:
+        unique_together = ['owner', 'product']
+
+    def __str__(self):
+        return str(self.id)
