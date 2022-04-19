@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     #Apps
     'applications.product',
     'applications.account',
+    'applications.telebot.apps.TelebotConfig',
 
     #modules
     'rest_framework',

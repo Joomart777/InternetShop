@@ -21,6 +21,7 @@ from applications.product.permissions import IsAdmin, IsAuthor
 
 from applications.product.serializers import ProductSerializer, RatingSerializers, CategorySerializers, \
     ReviewSerializers, LikeSerializers, OrderSerializers
+from applications.telebot.sendmessage import sendTelegram
 
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -132,6 +133,11 @@ class ProductViewSet(ModelViewSet):
         # print(vl)
         objquery = request.data.copy()
         objquery.__setitem__("product_id", vl)
+        tg_prod = str(Product.objects.get(pk=vl))
+        # print(tg_prod)
+        #
+##TeleBot
+        sendTelegram(tg_customer=obj.customer, tg_tel=obj.tel,tg_prod = tg_prod, tg_qty = obj.quantity )
 
         return Response(objquery,
                         status=status.HTTP_201_CREATED)
