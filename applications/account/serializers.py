@@ -32,10 +32,10 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError('Password did not match!')
         return attrs
 
-    def validate_email(self,email):
-        if not email.endswith('gmail.com'):
-            raise serializers.ValidationError("Your email must end with 'gmail.com'")
-        return email
+    # def validate_email(self,email):
+    #     if not email.endswith('gmail.com'):
+    #         raise serializers.ValidationError("Your email must end with 'gmail.com'")
+    #     return email
 
     def validate(self,attrs):
         email=attrs.get('email')

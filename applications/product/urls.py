@@ -11,6 +11,7 @@ router.register('', ProductViewSet)
 
 
 urlpatterns = [
+
     path('', ListCreateView.as_view()),
     path('<int:pk>/', DeleteUpdateRetriveView.as_view()),
     # path('', ProductViewSet.as_view({'get':'list'})),
@@ -18,4 +19,5 @@ urlpatterns = [
     path('category/<str:slug>/', CategoryRetriveDeleteUpdateView.as_view()),
     path('', include(router.urls)),
 ]
+
 

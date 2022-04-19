@@ -10,12 +10,13 @@ admin.site.register(Category)
 admin.site.register(Image)
 admin.site.register(Rating)
 admin.site.register(Review)
-
+admin.site.register(Likes)
+admin.site.register(Order)
 
 class ImageInAdmin(admin.TabularInline):
     model = Image
     fields = ('image',)
-    max_num = 5
+    max_num = 3
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
