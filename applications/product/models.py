@@ -33,8 +33,8 @@ class Image(models.Model):
 
 
 class Rating(models.Model):
-        product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='rating')
-        owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='rating')
+        product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='+')
+        owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+')
         rating = models.SmallIntegerField(validators=[
             MinValueValidator(1),
             MaxValueValidator(5)
@@ -51,8 +51,8 @@ class Review(models.Model):
 
 
 class Favorite(models.Model):
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL,null=True,blank=True, on_delete=models.CASCADE,related_name='favorites')
-    product = models.ForeignKey(Product,null=True,blank=True, on_delete=models.CASCADE, related_name='favorites')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL,null=True,blank=True, on_delete=models.CASCADE,related_name='likes')
+    product = models.ForeignKey(Product,null=True,blank=True, on_delete=models.CASCADE, related_name='likes')
     favorite = models.BooleanField(default=True)
 
     def __str__(self):
@@ -62,8 +62,8 @@ class Favorite(models.Model):
 
 
 class Like(models.Model):
-    owner = models.ForeignKey(CustomUser,blank=True,on_delete=models.CASCADE, related_name='like')
-    product = models.ForeignKey(Product,blank=True, on_delete=models.CASCADE, related_name='like')
+    owner = models.ForeignKey(CustomUser,blank=True,on_delete=models.CASCADE, related_name='+')
+    product = models.ForeignKey(Product,blank=True, on_delete=models.CASCADE, related_name='+')
 
     class Meta:
         unique_together = ['owner', 'product']
