@@ -12,7 +12,7 @@ admin.site.register(Rating)
 admin.site.register(Review)
 admin.site.register(Likes)
 admin.site.register(Order)
-
+admin.site.register(Favorite)
 class ImageInAdmin(admin.TabularInline):
     model = Image
     fields = ('image',)

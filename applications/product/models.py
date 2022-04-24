@@ -42,7 +42,7 @@ class Rating(models.Model):
         owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='rating')
         rating = models.SmallIntegerField(validators=[
             MinValueValidator(1),
-            MaxValueValidator(5)
+            MaxValueValidator(5),
         ])
 
 
@@ -61,7 +61,7 @@ class Review(models.Model):
 class Likes(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='likes')
     # owner = models.OneToOneField(User, on_delete=models.CASCADE)
-    owner = models.ForeignKey(User, blank=True, on_delete=models.CASCADE, related_name='like')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='like')
 
     def __str__(self):
         return f'{self.owner}--likes-> {self.product}'
@@ -75,3 +75,12 @@ class Order(models.Model):
 
     def __str__(self):
         return f'{self.customer}--ordered-> {self.product}'
+
+
+class Favorite(models.Model):
+    owner = models.ForeignKey(User,null=True,blank=True, on_delete=models.CASCADE,related_name='favorites')
+    product = models.ForeignKey(Product,null=True,blank=True, on_delete=models.CASCADE, related_name='favorites')
+    favorite = models.BooleanField(default=True)
+
+    def str(self):
+        return f'{self.owner} --> {self.product}'
