@@ -13,4 +13,4 @@ class ProductFilter(filters.FilterSet):
     class Meta:
         model = Product
         # fields = ['category','price',]
-        fields = ['name','price_from','price_to','category', ]
+        fields = ['name','price_from','price_to','category',]

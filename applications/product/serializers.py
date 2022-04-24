@@ -1,6 +1,8 @@
+from functools import cached_property
+
 from rest_framework import serializers
 from rest_framework.utils import representation
-
+from rest_framework.utils.field_mapping import get_nested_relation_kwargs
 
 from applications.product.models import *
 
@@ -15,41 +17,39 @@ class ProductImageSerializers(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.email')
     images = ProductImageSerializers(many=True, read_only=True)
+
     class Meta:
         model = Product
         # fields = '__all__'
+        # 'rating', 'likes'
+        fields = ('id', 'owner','name','description','category','price','images','likes')
 
-        fields = ('id', 'owner','name','description','category','price','images','rating','likes')
     def create(self, validated_data):
         request = self.context.get('request')
+
         images_data = request.FILES
-        product = Product.objects.create(**validated_data)
+        # pl=request.user_id
+        product = Product.objects.create(**validated_data, owner=request.user)
+        print(request.data)
 
         for image in images_data.getlist('images'):
             Image.objects.create(product=product, image=image)
         return product
 
+
+#
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        rating_result = 0
-        for i in instance.rating.all():
-            print(i)
-            rating_result += int(i.rating)
-        # print(rating_result)
-        if instance.rating.all().count()  == 0:
-           representation['rating'] = rating_result
-        else:
-           representation['rating'] = rating_result/instance.rating.all().count()
-
-
-##like_representation
+#
+#
+#like_representation
         total_likes = 0
         for i in instance.likes.all():
             total_likes += 1
-            print(i)
-        representation['likes'] = total_likes
-        return representation
 
+        representation['likes'] = total_likes
+
+        return representation
 
 
 class RatingSerializers(serializers.ModelSerializer):
@@ -75,4 +75,9 @@ class LikeSerializers(serializers.ModelSerializer):
 class OrderSerializers(serializers.ModelSerializer):
     class Meta:
         model = Order
+        fields = "__all__"
+
+class FavoriteSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Favorite
         fields = "__all__"

@@ -20,7 +20,7 @@ from applications.product.models import *
 from applications.product.permissions import IsAdmin, IsAuthor
 
 from applications.product.serializers import ProductSerializer, RatingSerializers, CategorySerializers, \
-    ReviewSerializers, LikeSerializers, OrderSerializers
+    ReviewSerializers, LikeSerializers, OrderSerializers, FavoriteSerializers
 from applications.telebot.sendmessage import sendTelegram
 
 
@@ -32,7 +32,7 @@ class LargeResultsSetPagination(PageNumberPagination):
 class ListCreateView(ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    # permission_classes = [IsAuthenticatedOrReadOnly]  # IsAdminUser
+    permission_classes = [IsAuthenticatedOrReadOnly]  # IsAdminUser
     # pagination_class = None
     pagination_class = LargeResultsSetPagination
 
@@ -40,7 +40,7 @@ class ListCreateView(ListCreateAPIView):
     filterset_fields = ['category','price']
     # search_fields = ['name','description']
     # filterset_class = ProductFilter
-    ordering_fields = ['id']
+    ordering_fields = ['id', 'price']
 
 
     def get_queryset(self):
@@ -75,23 +75,24 @@ class ProductViewSet(ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
-#rating
-    @action(methods=['POST'],detail=True)
-    def rating(self,request,pk):
-        serializer = RatingSerializers(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        try:
-            obj = Rating.objects.get(product=self.get_object(), owner=request.user)
-            obj.rating = request.data['rating']
+        # review
+    @action(methods=['POST'], detail=True)
+    def rating(self, request, pk):
+            serializer = RatingSerializers(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            try:
+                obj = Rating.objects.get(product=self.get_object(),
+                                         owner=request.user)
+                obj.review = request.data['rating']
+            except Review.DoesNotExist:
+                obj = Review(owner=request.user,
+                             product=self.get_object(),rating=request.data['rating']
+                             )
+            obj.save()
+            return Response(request.data,
+                            status=status.HTTP_201_CREATED)
 
-        except Rating.DoesNotExist:
-            obj = Rating(owner=request.user,product=self.get_object(),rating=request.data['rating'])
-
-        obj.save()
-        return Response(request.data,status=status.HTTP_201_CREATED)
-
-
-#review
+    #review
     @action(methods=['POST'], detail=True)
     def review(self, request, pk):
         serializer = ReviewSerializers(data=request.data)
@@ -142,6 +143,18 @@ class ProductViewSet(ModelViewSet):
         return Response(objquery,
                         status=status.HTTP_201_CREATED)
 
+
+##Favorites
+    @action(methods=['POST'], detail=True)
+    def favorite(self, request, pk):
+        serializer = FavoriteSerializers(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:
+            object = Favorite.objects.get(product=self.get_object(),owner=request.user)
+        except Favorite.DoesNotExist:
+            object = Favorite(owner=request.user,product=self.get_object())
+        object.save()
+        return Response('-- Favorite added', status=status.HTTP_200_OK)
 
 
 
